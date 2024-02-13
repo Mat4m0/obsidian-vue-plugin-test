@@ -46,7 +46,7 @@ export default defineConfig({
       formats: ['cjs'],
     },
     rollupOptions: {
-      external: ['obsidian', 'duckdb'],
+      external: ['obsidian'],
       output: {
         assetFileNames: 'styles.css',
       },
