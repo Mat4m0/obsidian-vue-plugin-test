@@ -3,6 +3,9 @@ import { createPinia } from 'pinia'
 import type { WorkspaceLeaf } from 'obsidian'
 import { ItemView } from 'obsidian'
 import App from '../App.vue'
+import { useObsidianStore } from '@/stores/obsidianStore'
+
+
 
 export const VIEW_TYPE_VUE_TEST = 'vue-test-view'
 
@@ -14,8 +17,11 @@ export class VueTestView extends ItemView {
 
     this.icon = 'flask-conical'
 
-    this.vueApp = createApp(App)
+    this.vueApp = createApp(App).provide('obsidianApp', this.app);
     this.vueApp.use(createPinia())
+    const obsidianStore = useObsidianStore();
+    obsidianStore.setApp(this.app);
+    
   }
 
   getViewType() {
