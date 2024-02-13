@@ -39,6 +39,7 @@ export default defineConfig({
     },
   },
   build: {
+    outDir: '/Users/matthias/Git/_Loopinum/obsidian-silicon/Silicon Vault/.obsidian/plugins/tes',
     lib: {
       entry: resolve(__dirname, 'src/plugin/main.ts'),
       fileName: 'main',
