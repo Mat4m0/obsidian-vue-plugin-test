@@ -1,53 +1,55 @@
-import { fileURLToPath, URL } from "node:url";
+import { URL, fileURLToPath } from 'node:url'
 
-import { defineConfig, loadEnv, PluginOption } from "vite";
-import vue from "@vitejs/plugin-vue";
-import { resolve } from "node:path";
-import { cp } from "node:fs/promises";
+import { resolve } from 'node:path'
+import { cp } from 'node:fs/promises'
+import type { PluginOption } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
+import vue from '@vitejs/plugin-vue'
 
-const obsidianDev = (): PluginOption => {
-  let pluginDirectory: string;
+function obsidianDev(): PluginOption {
+  let pluginDirectory: string
 
   return {
-    name: "copy-to-obsidian",
+    name: 'copy-to-obsidian',
     async config(_, { mode }) {
-      const env = loadEnv(mode, process.cwd(), "");
+      const env = loadEnv(mode, process.cwd(), '')
 
-      pluginDirectory = env.OBSIDIAN_PLUGIN_DIRECTORY;
+      pluginDirectory = env.OBSIDIAN_PLUGIN_DIRECTORY
     },
     async closeBundle() {
-      if (!pluginDirectory) return;
+      if (!pluginDirectory)
+        return
 
-      const manifest = require(resolve(__dirname, "public/manifest.json"));
+      const manifest = require(resolve(__dirname, 'public/manifest.json'))
 
-      const source = resolve(__dirname, "dist");
-      const target = resolve(pluginDirectory, manifest.id);
+      const source = resolve(__dirname, 'dist')
+      const target = resolve(pluginDirectory, manifest.id)
 
-      await cp(source, target, { recursive: true });
+      await cp(source, target, { recursive: true })
     },
-  };
-};
+  }
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue(), obsidianDev()],
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   build: {
     lib: {
-      entry: resolve(__dirname, "src/plugin/main.ts"),
-      fileName: "main",
-      formats: ["cjs"],
+      entry: resolve(__dirname, 'src/plugin/main.ts'),
+      fileName: 'main',
+      formats: ['cjs'],
     },
     rollupOptions: {
-      external: ["obsidian"],
+      external: ['obsidian'],
       output: {
-        assetFileNames: "styles.css",
+        assetFileNames: 'styles.css',
       },
     },
     watch: {},
   },
-});
+})

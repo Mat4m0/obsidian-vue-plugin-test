@@ -1,37 +1,38 @@
-import { createApp, type App as VueApp } from "vue";
-import { createPinia } from "pinia";
-import App from "../App.vue";
-import { ItemView, WorkspaceLeaf } from "obsidian";
+import { type App as VueApp, createApp } from 'vue'
+import { createPinia } from 'pinia'
+import type { WorkspaceLeaf } from 'obsidian'
+import { ItemView } from 'obsidian'
+import App from '../App.vue'
 
-export const VIEW_TYPE_VUE_TEST = "vue-test-view";
+export const VIEW_TYPE_VUE_TEST = 'vue-test-view'
 
 export class VueTestView extends ItemView {
-  vueApp: VueApp;
+  vueApp: VueApp
 
   constructor(leaf: WorkspaceLeaf) {
-    super(leaf);
+    super(leaf)
 
-    this.icon = "flask-conical";
+    this.icon = 'flask-conical'
 
-    this.vueApp = createApp(App);
-    this.vueApp.use(createPinia());
+    this.vueApp = createApp(App)
+    this.vueApp.use(createPinia())
   }
 
   getViewType() {
-    return VIEW_TYPE_VUE_TEST;
+    return VIEW_TYPE_VUE_TEST
   }
 
   getDisplayText() {
-    return "Vue Test View";
+    return 'Vue Test View'
   }
 
   async onOpen() {
-    const mountPoint = this.containerEl.children[1];
+    const mountPoint = this.containerEl.children[1]
 
-    this.vueApp.mount(mountPoint);
+    this.vueApp.mount(mountPoint)
   }
 
   async onClose() {
-    this.vueApp.unmount();
+    this.vueApp.unmount()
   }
 }

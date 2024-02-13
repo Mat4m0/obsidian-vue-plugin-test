@@ -37,30 +37,30 @@ pnpm i obsidian
 Beyond the standard parts of a view according to the [plugin development docs on Views](https://docs.obsidian.md/Plugins/User+interface/Views) the actual Vue part is fairly small. You can basically just copy-paste your standard Vue `main.ts` into the `ItemView`, distributed over the relevant lifecycle methods.
 
 ```ts
-import App from "../App.vue";
+import App from '../App.vue'
 
 // other imports and view type omitted for brevity
 
 export class VueTestView extends ItemView {
-  vueApp: VueApp;
+  vueApp: VueApp
 
   constructor(leaf: WorkspaceLeaf) {
-    super(leaf);
+    super(leaf)
 
-    this.vueApp = createApp(App);
-    this.vueApp.use(createPinia());
+    this.vueApp = createApp(App)
+    this.vueApp.use(createPinia())
   }
 
   // getViewType and getDisplayText omitted for brevity
 
   async onOpen() {
-    const mountPoint = this.containerEl.children[1];
+    const mountPoint = this.containerEl.children[1]
 
-    this.vueApp.mount(mountPoint);
+    this.vueApp.mount(mountPoint)
   }
 
   async onClose() {
-    this.vueApp.unmount();
+    this.vueApp.unmount()
   }
 }
 ```
@@ -72,12 +72,12 @@ export class VueTestView extends ItemView {
 The plugin itself is no different from the one in [the docs](https://docs.obsidian.md/Plugins/User+interface/Views). Just add whatever you need and register your view.
 
 ```ts
-import { Plugin } from "obsidian";
-import { VIEW_TYPE_VUE_TEST, VueTestView } from "./view";
+import { Plugin } from 'obsidian'
+import { VIEW_TYPE_VUE_TEST, VueTestView } from './view'
 
 export default class VueTestPlugin extends Plugin {
   async onload() {
-    this.registerView(VIEW_TYPE_VUE_TEST, (leaf) => new VueTestView(leaf));
+    this.registerView(VIEW_TYPE_VUE_TEST, leaf => new VueTestView(leaf))
 
     // whatever else you need to actually show your View
   }
@@ -110,23 +110,23 @@ export default defineConfig({
   build: {
     // Build in lib mode
     lib: {
-      entry: resolve(__dirname, "src/plugin/main.ts"),
+      entry: resolve(__dirname, 'src/plugin/main.ts'),
       // Obsidian expects a "main.js"
-      fileName: "main",
-      formats: ["cjs"],
+      fileName: 'main',
+      formats: ['cjs'],
     },
     rollupOptions: {
       // the obsidian package does not need to be included in the plugin
-      external: ["obsidian"],
+      external: ['obsidian'],
       output: {
         // default is "style.css", Obsidian needs plural
-        assetFileNames: "styles.css",
+        assetFileNames: 'styles.css',
       },
     },
     // Run the build in watch mode, to not have to build manually when making changes
     watch: {},
   },
-});
+})
 ```
 
 ### Automate dev deployment
@@ -142,38 +142,39 @@ OBSIDIAN_PLUGIN_DIRECTORY="/wherever/your/vault/lives/.obsidian/plugins"
 Add the custom plugin directly into `vite.config.ts` or into its own module, and add the plugin to the Vite config.
 
 ```ts
-import { defineConfig, loadEnv, PluginOption } from "vite";
-import { cp } from "node:fs/promises";
+import { cp } from 'node:fs/promises'
+import { PluginOption, defineConfig, loadEnv } from 'vite'
 
 // rest of the imports omitted for brevity
 
-const obsidianDev = (): PluginOption => {
-  let pluginDirectory: string;
+function obsidianDev(): PluginOption {
+  let pluginDirectory: string
 
   return {
-    name: "copy-to-obsidian",
+    name: 'copy-to-obsidian',
     async config(_, { mode }) {
-      const env = loadEnv(mode, process.cwd(), "");
+      const env = loadEnv(mode, process.cwd(), '')
 
-      pluginDirectory = env.OBSIDIAN_PLUGIN_DIRECTORY;
+      pluginDirectory = env.OBSIDIAN_PLUGIN_DIRECTORY
     },
     async closeBundle() {
-      if (!pluginDirectory) return;
+      if (!pluginDirectory)
+        return
 
-      const manifest = require(resolve(__dirname, "public/manifest.json"));
+      const manifest = require(resolve(__dirname, 'public/manifest.json'))
 
-      const source = resolve(__dirname, "dist");
-      const target = resolve(pluginDirectory, manifest.id);
+      const source = resolve(__dirname, 'dist')
+      const target = resolve(pluginDirectory, manifest.id)
 
-      await cp(source, target, { recursive: true });
+      await cp(source, target, { recursive: true })
     },
-  };
-};
+  }
+}
 
 export default defineConfig({
   plugins: [vue(), obsidianDev()],
   // rest of the config omitted for brevity
-});
+})
 ```
 
 ## Run your plugin
