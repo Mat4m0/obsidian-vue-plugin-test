@@ -39,14 +39,14 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: '/Users/matthias/Git/_Loopinum/obsidian-silicon/Silicon Vault/.obsidian/plugins/tes',
+    outDir: '_vault/.obsidian/plugins/my-plugin',
     lib: {
       entry: resolve(__dirname, 'src/plugin/main.ts'),
       fileName: 'main',
       formats: ['cjs'],
     },
     rollupOptions: {
-      external: ['obsidian'],
+      external: ['obsidian', 'duckdb'],
       output: {
         assetFileNames: 'styles.css',
       },
