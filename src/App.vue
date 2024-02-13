@@ -10,6 +10,7 @@ let files = ref([]);
 onMounted(() => {
   if (obsidianStore.app) {
     // Update the value of files to be the array of markdown files
+    //@ts-ignore
     files.value = obsidianStore.app.vault.getMarkdownFiles();
     console.log(`Number of notes: ${files.value.length}`);
   }
