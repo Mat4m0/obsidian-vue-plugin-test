@@ -1,6 +1,7 @@
 import { Plugin } from 'obsidian'
 import { VIEW_TYPE_VUE_TEST, VueTestView } from './view'
-import { Database } from 'node-sqlite3-wasm'
+import * as sqlite from 'node-sqlite3-wasm';
+const { Database } = sqlite;
 
 export default class VueTestPlugin extends Plugin {
   async onload() {
@@ -14,10 +15,28 @@ export default class VueTestPlugin extends Plugin {
       },
     })
 
+const db = new Database("database.db");
 
+db.exec(
+  "DROP TABLE IF EXISTS employees; " +
+    "CREATE TABLE IF NOT EXISTS employees (name TEXT, salary INTEGER)"
+);
+
+db.run("INSERT INTO employees VALUES (:n, :s)", {
+  ":n": "James",
+  ":s": 50000,
+});
+
+const r = db.all("SELECT * from employees");
+console.log(r);
+// [ { name: 'James', salary: 50000 } ]
+
+db.close();
 
     await this.createView()
   }
+
+  
 
   async onunload() {
     this.findView()?.detach()
