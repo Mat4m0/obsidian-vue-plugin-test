@@ -79,7 +79,8 @@
               "state": {}
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
@@ -160,7 +161,7 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "f3e361081d22b6bd",
+  "active": "b3ce71d33f38c61f",
   "lastOpenFiles": [
     "Welcome.md"
   ]

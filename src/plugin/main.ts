@@ -1,5 +1,6 @@
 import { Plugin } from 'obsidian'
 import { VIEW_TYPE_VUE_TEST, VueTestView } from './view'
+import { Database } from 'node-sqlite3-wasm'
 
 export default class VueTestPlugin extends Plugin {
   async onload() {
@@ -13,8 +14,10 @@ export default class VueTestPlugin extends Plugin {
       },
     })
 
+
+
     await this.createView()
-  }
+  }n
 
   async onunload() {
     this.findView()?.detach()

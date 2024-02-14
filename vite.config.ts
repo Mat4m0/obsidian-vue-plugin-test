@@ -5,6 +5,7 @@ import { cp } from 'node:fs/promises'
 import type { PluginOption } from 'vite'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import nodePolyfills from 'rollup-plugin-polyfill-node';
 
 function obsidianDev(): PluginOption {
   let pluginDirectory: string
@@ -32,7 +33,7 @@ function obsidianDev(): PluginOption {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), obsidianDev()],
+  plugins: [vue(), obsidianDev(), nodePolyfills()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
