@@ -6,6 +6,9 @@ import type { PluginOption } from 'vite'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import nodePolyfills from 'rollup-plugin-polyfill-node';
+import wasm from "vite-plugin-wasm";
+import topLevelAwait from "vite-plugin-top-level-await";
+import electron from 'vite-plugin-electron'
 
 function obsidianDev(): PluginOption {
   let pluginDirectory: string
@@ -33,7 +36,9 @@ function obsidianDev(): PluginOption {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), obsidianDev(), nodePolyfills()],
+  plugins: [    wasm(),
+    topLevelAwait(
+    ), vue(), obsidianDev(), nodePolyfills()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

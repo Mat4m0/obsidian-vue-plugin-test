@@ -1,7 +1,7 @@
 import { Plugin } from 'obsidian'
 import { VIEW_TYPE_VUE_TEST, VueTestView } from './view'
-import * as sqlite from 'node-sqlite3-wasm';
-const { Database } = sqlite;
+
+
 
 export default class VueTestPlugin extends Plugin {
   async onload() {
@@ -15,7 +15,31 @@ export default class VueTestPlugin extends Plugin {
       },
     })
 
-const db = new Database("database.db");
+    await this.loadDatabase() 
+
+
+
+    await this.createView()
+  }
+
+  
+
+  async onunload() {
+    this.findView()?.detach()
+  }
+
+  findView() {
+    for (const leaf of this.app.workspace.getLeavesOfType(VIEW_TYPE_VUE_TEST)) {
+      if (leaf.view instanceof VueTestView)
+        return leaf
+    }
+  }
+
+  async loadDatabase() {
+    const sqlite = await import('node-sqlite3-wasm');
+    const { Database } = sqlite;
+    // Use sqlite.Database as needed
+    const db = new Database("database.db");
 
 db.exec(
   "DROP TABLE IF EXISTS employees; " +
@@ -32,21 +56,6 @@ console.log(r);
 // [ { name: 'James', salary: 50000 } ]
 
 db.close();
-
-    await this.createView()
-  }
-
-  
-
-  async onunload() {
-    this.findView()?.detach()
-  }
-
-  findView() {
-    for (const leaf of this.app.workspace.getLeavesOfType(VIEW_TYPE_VUE_TEST)) {
-      if (leaf.view instanceof VueTestView)
-        return leaf
-    }
   }
 
   async createView() {
