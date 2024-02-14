@@ -17,7 +17,7 @@ export default class VueTestPlugin extends Plugin {
 
 
     await this.createView()
-  }n
+  }
 
   async onunload() {
     this.findView()?.detach()
