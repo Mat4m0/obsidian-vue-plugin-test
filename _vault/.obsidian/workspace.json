@@ -78,8 +78,17 @@
               "type": "bookmarks",
               "state": {}
             }
+          },
+          {
+            "id": "4510cfb3be18b07d",
+            "type": "leaf",
+            "state": {
+              "type": "vue-test-view",
+              "state": {}
+            }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
@@ -160,7 +169,7 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "f3e361081d22b6bd",
+  "active": "4510cfb3be18b07d",
   "lastOpenFiles": [
     "Welcome.md"
   ]
